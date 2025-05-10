@@ -1,5 +1,6 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AuditList from './page/AuditList.jsx';
+import { Outlet, Link } from "react-router-dom";
+
+import AuditList from './pages/AuditList.jsx';
 import './App.css';
 
 function App() {
