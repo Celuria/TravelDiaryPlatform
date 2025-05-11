@@ -4,6 +4,7 @@ import StatusFilter from '../components/Audit/StatusFilter';
 import RejectModal from '../components/Audit/RejectModal';
 import DeleteModal from '../components/Audit/DeleteModal';
 import Notification from '../components/Common/Notification';
+import Header from '../components/Common/Header';
 
 const sampleTravels = [
   {
@@ -49,7 +50,7 @@ const sampleTravels = [
   }
 ];
 
-const AuditList = () => {
+function AuditList (){
   const [travels, setTravels] = useState(sampleTravels);
   const [filterStatus, setFilterStatus] = useState('all');
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -214,4 +215,4 @@ const AuditList = () => {
   );
 };
 
-export default AuditList;    
+export default AuditList;
