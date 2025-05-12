@@ -1,20 +1,18 @@
-//import { Routes, Router} from "react-router-dom";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import AuditList from './pages/AuditList.jsx';
-//import './App.css';
+import { Router, Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/audit" element={<AuditList />} />
-        {/* 其他路由可以在这里添加 */} 
-    
-      </Routes>
-    </Router>
-   
-  );
+import AuditList from './pages/AuditList';
+import './App.css';
+import { Component } from 'react';
+
+function App(){
+  return(
+    <div>
+      <p>ddsx</p>
+      <AuditList/>
+    </div>
+  )
 }
 
-export default App;
+export default App

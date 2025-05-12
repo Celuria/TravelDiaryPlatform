@@ -1,17 +1,17 @@
-import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import AuditList from "./pages/AuditList.jsx";
+import AuditList from "./pages/AuditList";
+import {Router, Routes, Route } from 'react-router-dom';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path:"/AuditList",
-    element:<AuditList/>
-  }
 
-]);
+function router() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<App />} />
+                <Route path="/audit" element={<AuditList />} />
+            </Routes>
+        </Router>
+    );
+}
 
 export default router;
