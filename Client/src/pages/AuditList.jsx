@@ -9,7 +9,11 @@ import Header from '../components/Common/Header';
 function AuditList (){
 
   return (
-    <div>dsadadasd</div>
+    
+    <div class="flex flex-wrap ">AuditList 
+      <Header/>
+      <Notification/>
+    </div>
   );
 };
 
