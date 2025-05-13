@@ -1,3 +1,4 @@
+//身份验证和权限检查
 const jwt = require('jsonwebtoken');
 
 exports.authenticate = (req, res, next) => {

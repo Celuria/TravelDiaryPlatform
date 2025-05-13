@@ -1,3 +1,4 @@
+//游记业务系统（含审核）
 const Travel = require('../models/Travel');
 
 exports.getTravels = async (req, res) => {

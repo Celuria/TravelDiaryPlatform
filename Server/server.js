@@ -1,14 +1,19 @@
+//服务器启动
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const app = express();
 const authRoutes = require('./routes/authRoutes');
 const travelRoutes = require('./routes/travelRoutes');
 
 // 数据库连接
-mongoose.connect(process.env.MONGODB_URI)
+/*mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('数据库连接成功'))
   .catch(err => console.error('数据库连接失败:', err));
+*/
+//加载数据
+let data = require('./models/data.json');
+const { users, travelNotes } = data;
 
 // 中间件
 app.use(express.json());

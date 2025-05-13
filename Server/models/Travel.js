@@ -1,3 +1,4 @@
+//游记模型
 const mongoose = require('mongoose');
 
 const travelSchema = new mongoose.Schema({
