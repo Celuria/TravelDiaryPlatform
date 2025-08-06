@@ -1,14 +1,12 @@
 import App from "./App";
-import AuditList from "./pages/AuditList";
 import {Router, Routes, Route } from 'react-router-dom';
-
+import Login from "./pages/Login.jsx"
 
 function router() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<App />} />
-                <Route path="/audit" element={<AuditList />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </Router>
     );

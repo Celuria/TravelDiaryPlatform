@@ -1,33 +1,61 @@
-import logo from "../assets/logo.png"
-import './Login.css'
+import { useActionState, useState } from "react";
+import "./Login.css";
+import { Input, Button, Radio, Form } from "antd";
 
-function Login(){
+function Login() {
+  const [rememberPassword, setRememberPassword] = useState(false);
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRadioClick = () => {
+    setRememberPassword((prev) => !prev); // 每次点击切换 true/false
+  };
+
+  const summitForm = (id, password) => {
+    console.log("Submitting form with ID:", id, "and Password:", password);
+    // 在这里可以添加表单提交逻辑，例如调用API进行登录验证
+    // 如果 rememberPassword 为 true，可以将 id 和 password 存储在本地
+  };
+
   return (
-    < >
+    <div className="login-max-box">
+      <div className="login-content-box">
+        <Form className="login-users-info">
+          <Input
+            type="primary"
+            className="login-input-id"
+            placeholder="账号"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          ></Input>
+          <Input.Password
+            type="primary"
+            className="login-input-password"
+            placeholder="密码"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></Input.Password>
+        </Form>
 
-        <header id="header" className="flex  items-center " >
-        
-          <img  className="logo" src={logo} alt="logo" style={{height:40,width:40}} />
-         
-        </header >
-
-        <aside className="aside">
-
-
-        </aside>
-
-        <main>
-
-        </main>
-      
-    
-       
-
-      
-      
-     
-    </>
+        <div className="login-button-container">
+          <div>
+            <Radio checked={rememberPassword} onClick={handleRadioClick}>
+              记住密码
+            </Radio>
+          </div>
+          <div className="login-button-box">
+            <Button
+              className="login-button"
+              type="primary"
+              onClick={summitForm}
+            >
+              立即登录
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
 export default Login;
