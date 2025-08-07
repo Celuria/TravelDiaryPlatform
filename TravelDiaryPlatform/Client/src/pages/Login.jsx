@@ -11,11 +11,17 @@ function Login() {
     setRememberPassword((prev) => !prev); // 每次点击切换 true/false
   };
 
-  const summitForm = (id, password) => {
+  const summitLoginForm = (id, password) => {
     console.log("Submitting form with ID:", id, "and Password:", password);
     // 在这里可以添加表单提交逻辑，例如调用API进行登录验证
     // 如果 rememberPassword 为 true，可以将 id 和 password 存储在本地
   };
+
+  const summitRegisterForm = (id, password) => {
+    console.log("Submitting registration form with ID:", id, "and Password:", password);
+    // 在这里可以添加注册逻辑，例如调用API进行用户注册
+    // 如果 rememberPassword 为 true，可以将 id 和 password 存储在本地
+  }
 
   return (
     <div className="login-max-box">
@@ -47,9 +53,16 @@ function Login() {
             <Button
               className="login-button"
               type="primary"
-              onClick={summitForm}
+              onClick={summitLoginForm}
             >
-              立即登录
+              登录
+            </Button>
+            <Button
+              className="login-button"
+              type="primary"
+              onClick={summitRegisterForm}
+            >
+              注册
             </Button>
           </div>
         </div>
