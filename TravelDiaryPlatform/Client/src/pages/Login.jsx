@@ -1,4 +1,4 @@
-import {useState } from "react";
+import {useState, useEffect} from "react";
 import "./Login.css";
 import { Input, Button, Radio, Form } from "antd";
 
@@ -11,16 +11,86 @@ function Login() {
     setRememberPassword((prev) => !prev); // 每次点击切换 true/false
   };
 
-  const summitLoginForm = (id, password) => {
+ // 检查本地存储中是否有记住的用户名和密码
+  useEffect(() => {
+    const storedId = localStorage.getItem("id");
+    const storedPassword = localStorage.getItem("password");
+    if (storedId && storedPassword) {
+      setId(storedId);
+      setPassword(storedPassword);
+      setRememberPassword(true);
+    }
+  }, []);
+
+
+  const summitLoginForm = async () => {
     console.log("Submitting form with ID:", id, "and Password:", password);
-    // 在这里可以添加表单提交逻辑，例如调用API进行登录验证
-    // 如果 rememberPassword 为 true，可以将 id 和 password 存储在本地
+    try {
+        const response = await fetch("http://localhost:5173/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: id, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 200) {
+        // 登录成功
+        const { token } = data;
+        localStorage.setItem("token", token); // 将 token 存储到本地存储
+         // 如果记住密码被选中，存储用户名和密码
+        if (rememberPassword) {
+          localStorage.setItem("id", id);
+          localStorage.setItem("password", password);
+        } else {
+          // 如果取消记住密码，清除本地存储
+          localStorage.removeItem("id");
+          localStorage.removeItem("password");
+        }
+        message.success("登录成功");
+        // 可以跳转到其他页面
+      } else {
+        // 登录失败
+        message.error(data.message || "登录失败");
+      }
+    } catch (error) {
+      console.error("登录失败:", error);
+      message.error("登录失败，请检查网络或联系管理员");
+    }
   };
 
-  const summitRegisterForm = (id, password) => {
+  const summitRegisterForm = async () => {
     console.log("Submitting registration form with ID:", id, "and Password:", password);
-    // 在这里可以添加注册逻辑，例如调用API进行用户注册
-    // 如果 rememberPassword 为 true，可以将 id 和 password 存储在本地
+    try {
+      const response = await fetch("http://localhost:5173/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: id, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 201) {
+        // 注册成功
+        message.success("注册成功");
+        // 如果记住密码被选中，存储用户名和密码
+        if (rememberPassword) {
+          localStorage.setItem("id", id);
+          localStorage.setItem("password", password);
+        }
+        // 可以跳转到其他页面
+      } else {
+        // 注册失败
+        message.error(data.message || "注册失败");
+      }
+    } catch (error) {
+      console.error("注册失败:", error);
+      message.error("注册失败，请检查网络或联系管理员");
+    } 
   }
 
   return (
@@ -28,14 +98,14 @@ function Login() {
       <div className="login-content-box">
         <Form className="login-users-info">
           <Input
-            type="primary"
+            type="text"
             className="login-input-id"
             placeholder="账号"
             value={id}
             onChange={(e) => setId(e.target.value)}
           ></Input>
           <Input.Password
-            type="primary"
+            type="password"
             className="login-input-password"
             placeholder="密码"
             value={password}
