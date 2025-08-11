@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "username": "user1",
+    "password": "pass123",
+    "timestamp": "2025-08-11T14:00:00Z"
+  },
+  {
+    "id": 2,
+    "username": "user2",
+    "password": "pass456",
+    "timestamp": "2025-08-11T14:05:00Z"
+  },
+  {
+    "id": 3,
+    "username": "user3",
+    "password": "pass789",
+    "timestamp": "2025-08-11T14:10:00Z"
+  }
+]
