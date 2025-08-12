@@ -7,6 +7,7 @@ function Login() {
   const [rememberPassword, setRememberPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const[messageApi, contextHolder] = message.useMessage();
 
   const handleRadioClick = () => {
     setRememberPassword((prev) => !prev); // 每次点击切换 true/false
@@ -40,6 +41,8 @@ function Login() {
 
       if (response.status === 200) {
         // 登录成功
+        messageApi.success("登录成功");
+       
         const { token } = data;
         localStorage.setItem("token", token); // 将 token 存储到本地存储
          // 如果记住密码被选中，存储用户名和密码
@@ -51,16 +54,16 @@ function Login() {
           localStorage.removeItem("username");
           localStorage.removeItem("password");
         }
-        message.success("登录成功");
+        messageApi.success("登录成功");
         // 可以跳转到其他页面
       } else {
         // 登录失败
-        message.error(data.message || "登录失败");
+        messageApi.error(data.message || "登录失败");
         console.log(data)
       }
     } catch (error) {
       console.error("登录失败:", error);
-      message.error("登录失败，请检查网络或联系管理员");
+      messageApi.error("登录失败，请检查网络或联系管理员");
     }
   };
 
@@ -79,7 +82,7 @@ function Login() {
 
       if (response.status === 201) {
         // 注册成功
-        message.success("注册成功");
+        messageApi.success("注册成功");
         // 如果记住密码被选中，存储用户名和密码
         if (rememberPassword) {
           localStorage.setItem("username", username);
@@ -88,16 +91,17 @@ function Login() {
         // 可以跳转到其他页面
       } else {
         // 注册失败
-        message.error(data.message || "注册失败");
+        messageApi.error(data.message || "注册失败");
       }
     } catch (error) {
       console.error("注册失败:", error);
-      message.error("注册失败，请检查网络或联系管理员");
-    } 
+      messageApi.error("注册失败，请检查网络或联系管理员");
+    }
   }
 
   return (
     <div className="login-max-box">
+      {contextHolder}
       <div className="login-content-box">
         <Form className="login-users-info">
           <Input

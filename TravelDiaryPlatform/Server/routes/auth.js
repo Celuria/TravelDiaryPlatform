@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: '密码错误' });
 
     const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1d' });
-    res.json({ token });
+    res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ message: '登录失败' });
   }
