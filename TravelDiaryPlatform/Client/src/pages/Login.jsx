@@ -1,10 +1,11 @@
 import {useState, useEffect} from "react";
 import "./Login.css";
-import { Input, Button, Radio, Form } from "antd";
+import { Input, Button, Radio, Form, message} from "antd";
+
 
 function Login() {
   const [rememberPassword, setRememberPassword] = useState(false);
-  const [id, setId] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRadioClick = () => {
@@ -13,10 +14,10 @@ function Login() {
 
  // 检查本地存储中是否有记住的用户名和密码
   useEffect(() => {
-    const storedId = localStorage.getItem("id");
+    const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
-    if (storedId && storedPassword) {
-      setId(storedId);
+    if (storedUsername && storedPassword) {
+      setUsername(storedUsername);
       setPassword(storedPassword);
       setRememberPassword(true);
     }
@@ -24,14 +25,15 @@ function Login() {
 
 
   const summitLoginForm = async () => {
-    console.log("Submitting form with ID:", id, "and Password:", password);
+    
+    console.log("Submitting form with Username:", username, "and Password:", password);
     try {
-        const response = await fetch("http://localhost:5173/login", {
+        const response = await fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: id, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
@@ -42,11 +44,11 @@ function Login() {
         localStorage.setItem("token", token); // 将 token 存储到本地存储
          // 如果记住密码被选中，存储用户名和密码
         if (rememberPassword) {
-          localStorage.setItem("id", id);
+          localStorage.setItem("username", username);
           localStorage.setItem("password", password);
         } else {
           // 如果取消记住密码，清除本地存储
-          localStorage.removeItem("id");
+          localStorage.removeItem("username");
           localStorage.removeItem("password");
         }
         message.success("登录成功");
@@ -54,6 +56,7 @@ function Login() {
       } else {
         // 登录失败
         message.error(data.message || "登录失败");
+        console.log(data)
       }
     } catch (error) {
       console.error("登录失败:", error);
@@ -62,14 +65,14 @@ function Login() {
   };
 
   const summitRegisterForm = async () => {
-    console.log("Submitting registration form with ID:", id, "and Password:", password);
+    console.log("Submitting registration form with Username:", username, "and Password:", password);
     try {
-      const response = await fetch("http://localhost:5173/register", {
+      const response = await fetch("http://localhost:3001/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: id, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
@@ -79,7 +82,7 @@ function Login() {
         message.success("注册成功");
         // 如果记住密码被选中，存储用户名和密码
         if (rememberPassword) {
-          localStorage.setItem("id", id);
+          localStorage.setItem("username", username);
           localStorage.setItem("password", password);
         }
         // 可以跳转到其他页面
@@ -100,13 +103,15 @@ function Login() {
           <Input
             type="text"
             className="login-input-id"
+            autoComplete="username"
             placeholder="账号"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           ></Input>
           <Input.Password
             type="password"
             className="login-input-password"
+            autoComplete="current-password"
             placeholder="密码"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
