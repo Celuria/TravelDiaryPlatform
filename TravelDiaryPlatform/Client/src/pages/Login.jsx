@@ -54,7 +54,7 @@ function Login() {
           localStorage.removeItem("username");
           localStorage.removeItem("password");
         }
-        messageApi.success("登录成功");
+       
         // 可以跳转到其他页面
       } else {
         // 登录失败
