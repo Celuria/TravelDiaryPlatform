@@ -1,19 +1,27 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "./Login.css";
-import { Input, Button, Radio, Form, message} from "antd";
-
+import { Input, Button, Radio, Form, message } from "antd";
+const options = [
+  { label: '管理员', value: 'admin', className: 'label-1' },
+  { label: '审核员', value: 'user', className: 'label-2' },
+];
 
 function Login() {
   const [rememberPassword, setRememberPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const[messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [role, setRole] = useState('admin');
 
   const handleRadioClick = () => {
     setRememberPassword((prev) => !prev); // 每次点击切换 true/false
   };
+  const onChange1 = ({ target: { role } }) => {
+    console.log('radio1 checked', role);
+    setRole(role);
+  };
 
- // 检查本地存储中是否有记住的用户名和密码
+  // 检查本地存储中是否有记住的用户名和密码
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     const storedPassword = localStorage.getItem("password");
@@ -24,17 +32,22 @@ function Login() {
     }
   }, []);
 
-
   const summitLoginForm = async () => {
-    
-    console.log("Submitting form with Username:", username, "and Password:", password);
+    console.log(
+      "Submitting form with Username:",
+      username,
+      "and Password:",
+      password,
+      "and Role:",
+      role
+    );
     try {
-        const response = await fetch("http://localhost:3001/api/auth/login", {
+      const response = await fetch("http://localhost:3001/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, role }),
       });
 
       const data = await response.json();
@@ -42,10 +55,10 @@ function Login() {
       if (response.status === 200) {
         // 登录成功
         messageApi.success("登录成功");
-       
+
         const { token } = data;
         localStorage.setItem("token", token); // 将 token 存储到本地存储
-         // 如果记住密码被选中，存储用户名和密码
+        // 如果记住密码被选中，存储用户名和密码
         if (rememberPassword) {
           localStorage.setItem("username", username);
           localStorage.setItem("password", password);
@@ -54,12 +67,12 @@ function Login() {
           localStorage.removeItem("username");
           localStorage.removeItem("password");
         }
-       
+
         // 可以跳转到其他页面
       } else {
         // 登录失败
         messageApi.error(data.message || "登录失败");
-        console.log(data)
+        console.log(data);
       }
     } catch (error) {
       console.error("登录失败:", error);
@@ -68,14 +81,21 @@ function Login() {
   };
 
   const summitRegisterForm = async () => {
-    console.log("Submitting registration form with Username:", username, "and Password:", password);
+    console.log(
+      "Submitting registration form with Username:",
+      username,
+      "and Password:",
+      password,
+      "and Role:",
+      role
+    );
     try {
       const response = await fetch("http://localhost:3001/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, role }),
       });
 
       const data = await response.json();
@@ -97,7 +117,7 @@ function Login() {
       console.error("注册失败:", error);
       messageApi.error("注册失败，请检查网络或联系管理员");
     }
-  }
+  };
 
   return (
     <div className="login-max-box">
@@ -127,6 +147,12 @@ function Login() {
             <Radio checked={rememberPassword} onClick={handleRadioClick}>
               记住密码
             </Radio>
+            <Radio.Group 
+            options={options} 
+            onChange={onChange1} 
+            value={role} 
+            optionType="button" />
+     
           </div>
           <div className="login-button-box">
             <Button
