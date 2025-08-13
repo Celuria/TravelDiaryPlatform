@@ -1,32 +1,58 @@
+require('dotenv').config();
+console.log('MONGODB_URI:', process.env.MONGODB_URI); // 检查环境变量是否正确加载
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
+const auditRoutes = require('./routes/audit');
 
 const app = express();
-const PORT = 3001;  // 你想用哪个端口，就用这个
+const PORT = process.env.PORT || 3001;
 
+// 全局中间件
 app.use(cors());
 app.use(express.json());
 
-// 挂载认证相关路由
-app.use('/api/auth', authRoutes);
+// 请求频率限制
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15分钟
+  max: 100, // 每IP限制100次请求
+  message: { message: '请求过于频繁，请稍后再试' }
+});
+app.use('/api/', apiLimiter);
 
-// 基础测试路由
-app.get('/api', (req, res) => {
-  res.json({ message: 'Hello from Node.js backend!' });
+// 路由挂载
+app.use('/api/auth', authRoutes);
+app.use('/api/audit', auditRoutes);
+
+// 健康检查接口
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date() });
 });
 
-// 连接 MongoDB
-mongoose.connect('mongodb://localhost:27017/travel-diary')
+// 全局错误处理中间件
+app.use((err, req, res, next) => {
+  console.error('服务器错误:', err);
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    message: process.env.NODE_ENV === 'development' ? err.message : '服务器内部错误',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
+// 数据库连接与服务器启动
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => {
-    console.log('MongoDB connected');
-
-    // 只有在 MongoDB 连接成功后再启动服务器
+    console.log('MongoDB 连接成功');
     app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+      console.log(`服务器运行在 http://localhost:${PORT}`);
     });
-
-  }).catch(err => {
-    console.error('MongoDB connection error:', err);
+  })
+  .catch(err => {
+    console.error('MongoDB 连接失败:', err.message);
+    process.exit(1); // 连接失败时退出进程
   });

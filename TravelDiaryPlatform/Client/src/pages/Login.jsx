@@ -3,7 +3,7 @@ import "./Login.css";
 import { Input, Button, Radio, Form, message } from "antd";
 const options = [
   { label: '管理员', value: 'admin', className: 'label-1' },
-  { label: '审核员', value: 'user', className: 'label-2' },
+  { label: '审核员', value: 'auditor', className: 'label-2' },
 ];
 
 function Login() {
@@ -16,9 +16,9 @@ function Login() {
   const handleRadioClick = () => {
     setRememberPassword((prev) => !prev); // 每次点击切换 true/false
   };
-  const onChange1 = ({ target: { role } }) => {
-    console.log('radio1 checked', role);
-    setRole(role);
+  const onChange1 = (e) => {
+    console.log('radio1 checked', e.target.value);
+    setRole(e.target.value);
   };
 
   // 检查本地存储中是否有记住的用户名和密码
