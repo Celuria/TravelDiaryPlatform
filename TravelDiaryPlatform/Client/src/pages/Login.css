@@ -43,6 +43,17 @@
   grid-template-columns: 1fr;
   grid-template-rows: 40px 40px;
   text-align: center;
+ 
+}
+.login-checkbox-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  
+}
+.login-checkbox{
+  margin-right: 10px;
 }
 .login-button-box {
   display: flex;

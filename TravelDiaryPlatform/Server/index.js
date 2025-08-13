@@ -1,5 +1,4 @@
 require('dotenv').config();
-console.log('MONGODB_URI:', process.env.MONGODB_URI); // 检查环境变量是否正确加载
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -42,10 +41,7 @@ app.use((err, req, res, next) => {
 });
 
 // 数据库连接与服务器启动
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('MongoDB 连接成功');
     app.listen(PORT, () => {

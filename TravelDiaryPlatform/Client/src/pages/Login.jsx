@@ -1,23 +1,28 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import { Input, Button, Radio, Form, message } from "antd";
+import { Input, Button, Radio, Form, message,Checkbox } from "antd";
+
+import WorkbenchHomepage from "./WorkbenchHomepage.jsx"
+
 const options = [
-  { label: '管理员', value: 'admin', className: 'label-1' },
-  { label: '审核员', value: 'auditor', className: 'label-2' },
+  { label: "管理员", value: "admin", className: "label-1" },
+  { label: "审核员", value: "auditor", className: "label-2" },
 ];
 
 function Login() {
   const [rememberPassword, setRememberPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("admin");
   const [messageApi, contextHolder] = message.useMessage();
-  const [role, setRole] = useState('admin');
+  const navigate = useNavigate();
 
   const handleRadioClick = () => {
     setRememberPassword((prev) => !prev); // 每次点击切换 true/false
   };
   const onChange1 = (e) => {
-    console.log('radio1 checked', e.target.value);
+    console.log("radio1 checked", e.target.value);
     setRole(e.target.value);
   };
 
@@ -69,6 +74,10 @@ function Login() {
         }
 
         // 可以跳转到其他页面
+        setTimeout(() => {
+          navigate("/WorkbenchHomepage");
+        }, 200);
+
       } else {
         // 登录失败
         messageApi.error(data.message || "登录失败");
@@ -136,23 +145,23 @@ function Login() {
             type="password"
             className="login-input-password"
             autoComplete="current-password"
-            placeholder="密码"
+            placeholder="密码（长度6-20位）"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Input.Password>
         </Form>
 
         <div className="login-button-container">
-          <div>
-            <Radio checked={rememberPassword} onClick={handleRadioClick}>
+          <div className="login-checkbox-container">
+            <Checkbox className="login-checkbox" checked={rememberPassword} onClick={handleRadioClick}>
               记住密码
-            </Radio>
-            <Radio.Group 
-            options={options} 
-            onChange={onChange1} 
-            value={role} 
-            optionType="button" />
-     
+            </Checkbox>
+            <Radio.Group
+              options={options}
+              onChange={onChange1}
+              value={role}
+              optionType="button"
+            />
           </div>
           <div className="login-button-box">
             <Button

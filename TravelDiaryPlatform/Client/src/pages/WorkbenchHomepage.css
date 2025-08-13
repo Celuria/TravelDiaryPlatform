@@ -1,0 +1,39 @@
+.workbench-layout {
+  height: 100vh;
+}
+
+.workbench-sider {
+  background-color: #001529; /* Ant Design 默认色 */
+}
+
+.logo-box {
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-img {
+  height: 40px;
+}
+
+.workbench-header {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.workbench-content {
+  margin: 16px;
+  padding: 16px;
+  background-color: #fff;
+  min-height: calc(100vh - 112px);
+}
