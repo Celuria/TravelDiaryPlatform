@@ -11,6 +11,7 @@ import "./WorkbenchHomepage.css";
 import Firstpage from "../assets/Firstpage";
 import Auditpage from "../assets/Auditpage";
 import Personalpage from "../assets/Personalpage";
+import TravelSubmitpage from "../assets/TravelSubmitpage"; 
 
 const { Header, Sider, Content } = Layout;
 function WorkbenchHomepage(){
@@ -37,7 +38,9 @@ function WorkbenchHomepage(){
             case "2":
                 return <Auditpage />;
             case "3":
-                return <Personalpage/>;
+                return <Personalpage />;
+            case "4":
+                return <TravelSubmitpage />;
             default:
                 return <Firstpage />;
         }
@@ -75,6 +78,11 @@ function WorkbenchHomepage(){
                 icon: <UserOutlined />,
                 label: "个人中心",
               },
+              {
+                key: "4",
+                icon: <UserOutlined />,
+                label: "提交游记",
+              },
             ]}
           />
         </Sider>
@@ -83,6 +91,7 @@ function WorkbenchHomepage(){
           <Header className="workbench-header">
             <div className="header-left"></div>
             <div className="header-right">
+              
               <Button
                 type="text"
                 icon={<SettingOutlined />}
