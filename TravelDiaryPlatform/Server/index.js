@@ -5,6 +5,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth');
 const auditRoutes = require('./routes/audit');
+const travelNoteRoutes = require('./routes/travelNote');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,6 +25,7 @@ app.use('/api/', apiLimiter);
 // 路由挂载
 app.use('/api/auth', authRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/travelNote', travelNoteRoutes);
 
 // 健康检查接口
 app.get('/api/health', (req, res) => {

@@ -4,6 +4,7 @@ const Personalpage = () => {
   return (
     <div
       style={{
+        alignItems: "right",
         width: "700px",
         margin: "2rem auto",
         background: "linear-gradient(135deg, #ffffff, #f3f6ff)",

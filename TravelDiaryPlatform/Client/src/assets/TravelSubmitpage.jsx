@@ -16,15 +16,22 @@ const TravelSubmitPage = () => {
 
     const travelData = {
       title: values.title,
-      author: values.author,
-      date: values.date.format("YYYY-MM-DD"),
       content: values.content,
       images: images,
     };
 
     try {
       // ======= 后端交互：提交游记数据 =======
-      await axios.post("http://localhost:3001/travels", travelData);
+      await axios.post(
+        "http://localhost:3001/api/travelNote/submit",
+        travelData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       message.success("游记提交成功！");
       form.resetFields();
       setUploadFileList([]);
@@ -34,16 +41,7 @@ const TravelSubmitPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "800px",
-        margin: "2rem auto",
-        background: "#fff",
-        padding: "2rem",
-        borderRadius: "10px",
-        boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
-      }}
-    >
+    <div style={{ alignItems: "right", height: "inherit", padding: "2rem", maxWidth: "600px", margin: "0 auto" }}>
       <h1 style={{ textAlign: "center", marginBottom: "1.5rem" }}>提交游记</h1>
 
       <Form

@@ -5,12 +5,10 @@ const travelNoteSchema = new mongoose.Schema({
     type: String,
     required: [true, '标题不能为空'],
     trim: true,
-    minlength: [2, '标题至少2个字符']
   }, // 游记标题（必传）
   content: {
     type: String,
     required: [true, '内容不能为空'],
-    minlength: [10, '内容至少10个字符']
   }, // 游记内容（必传）
   userId: {
     type: mongoose.Schema.Types.ObjectId,

@@ -63,6 +63,7 @@ function Login() {
 
         const { token } = data;
         localStorage.setItem("token", token); // 将 token 存储到本地存储
+        
         // 如果记住密码被选中，存储用户名和密码
         if (rememberPassword) {
           localStorage.setItem("username", username);
